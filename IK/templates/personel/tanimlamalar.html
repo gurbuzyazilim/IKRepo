@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+{% block pagetitle %}{{ block.super }} - Tanimlamalar {% endblock %}
+{% block body  %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-6" style="margin-top: 1%;">
+			<div class="w-box visibility">
+				<div class="w-box-header">
+					<i class="fa fa-tasks" aria-hidden="true"></i>&nbsp;&nbsp;Tanımlar
+				</div>	
+				<div class="w-box-content cnt_a">
+					<div style="overflow: auto;width: 100%;height: 205px;">
+						<div class="visibility">
+						<table class="table table-bordered">
+							<tbody>
+								<tr id="adresler">
+									<td value="adresler" class="define-buttons">
+										Adresler
+									</td>
+								</tr>
+								<tr id="aileFerdiTuru">
+									<td value="aileFerdiTuru" class="define-buttons">
+										Aile Ferdi Türü
+									</td>
+								</tr>
+								<tr id="avanslar">
+									<td value="avanslar" class="define-buttons">
+										Avanslar
+									</td>
+								</tr>
+								<tr id="bagimliliklar">
+									<td value="bagimliliklar" class="define-buttons">
+										Bağımlılıklar
+									</td>
+								</tr>
+								<tr id="bankaHesaplari">
+									<td value="bankaHesaplari" class="define-buttons">
+										Banka Hesapları
+									</td>
+								</tr>
+								<tr id="basvuruPuanlari">
+									<td value="basvuruPuanlari" class="define-buttons">
+										Başvuru Puanları
+									</td>
+								</tr>
+
+								<tr id="bedenler">
+									<td value="bedenler" class="define-buttons">
+										Bedenler
+									</td>
+								</tr>
+								<tr id="destekler">
+									<td value="destekler" class="define-buttons">
+										Destekler
+									</td>
+								</tr>
+								<tr id="departmanlar">
+									<td value="departmanlar" class="define-buttons">
+										Departmanlar
+									</td>
+								</tr>
+								<tr id="digerKimlikler">
+									<td value="digerKimlikler" class="define-buttons">
+										Diğer Kimlikler
+									</td>
+								</tr>
+								<tr id="diller">
+									<td value="diller" class="define-buttons">
+										Diller
+									</td>
+								</tr>
+								<tr id="dovizler">
+									<td value="dovizler" class="define-buttons">
+										Dövizler
+									</td>
+								</tr>
+								<tr id="okullarKurslar">
+									<td value="okullarKurslar" class="define-buttons">
+										Okullar-Kurslar
+									</td>
+								</tr>
+								<tr id="fazlaMesailer">
+									<td value="fazlaMesailer" class="define-buttons">
+										Fazla Mesailer
+									</td>
+								</tr>
+								<tr id="gorevler">
+									<td value="gorevler" class="define-buttons">
+										Görevler
+									</td>
+								</tr>
+								<tr id="gruplar">
+									<td value="gruplar" class="define-buttons">
+										Gruplar
+									</td>
+								</tr>
+								<tr id="ikramiyeler">
+									<td value="ikramiyeler" class="define-buttons">
+										İkramiyeler
+									</td>
+								</tr>
+								<tr id="izinler">
+									<td value="izinler" class="define-buttons">
+										İzinler
+									</td>
+								</tr>
+								<tr id="kesintiler">
+									<td value="kesintiler" class="define-buttons">
+										Kesintiler
+									</td>
+								</tr>
+								<tr id="maasTipleri">
+									<td value="maasTipleri" class="define-buttons">
+										Maaş Tipleri
+									</td>
+								</tr>
+								<tr id="mesaiTipleri">
+									<td value="mesaiTipleri" class="define-buttons">
+										Mesai Tipi
+									</td>
+								</tr>
+								<tr id="nitelikler">
+									<td value="nitelikler" class="define-buttons">
+										Nitelikler
+									</td>
+								</tr>
+								<tr id="performanslar">
+									<td value="performanslar" class="define-buttons">
+										Performanslar
+									</td>
+								</tr>
+								<tr id="primler">
+									<td value="primler" class="define-buttons">
+										Primler
+									</td>
+								</tr>
+								<tr id="sertifikalar">
+									<td value="sertifikalar" class="define-buttons">
+										Sertifikalar
+									</td>
+								</tr>								
+								<tr id="tahakkuklar">
+									<td value="tahakkuklar" class="define-buttons">
+										Tahakkuklar
+									</td>
+								</tr>
+								<tr id="tasimaTipleri">
+									<td value="tasimaTipleri" class="define-buttons">
+										Taşıma Tipleri
+									</td>
+								</tr>
+								<tr id="vizeler">
+									<td value="vizeler" class="define-buttons">
+										Vizeler
+									</td>
+								</tr>
+								<tr id="yardimlar">
+									<td value="yardimlar" class="define-buttons">
+										Yardımlar
+									</td>
+								</tr>
+								<tr id="yemekKartlari">
+									<td value="yemekKartlari" class="define-buttons">
+										Yemek Kartları
+									</td>
+								</tr>
+								<tr id="yetkiler">
+									<td value="yetkiler" class="define-buttons">
+										Yetkiler
+									</td>
+								</tr>
+								<tr id="zimmetler">
+									<td value="zimmetler" class="define-buttons">
+										Zimmetler
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="col-md-6" style="margin-top: 1%;">			
+			<div class="w-box visibility">
+				<div class="w-box-header">
+					<i class="fa fa-table" aria-hidden="true"></i>
+					<label id="tanimlamaTablosuBaslik"></label>
+				</div>
+				<div class="w-box-content cnt_a">
+					<table id="tanimlamaTablosu" value="departmanlar" class="table table-bordered">
+						<tbody>
+							<tr>
+								<th>Kodu</th>
+								<td style="background-color:#FFEBE4;">
+									<input type="text" id="kodu" class="form-control" maxlength="10" required="" data-hg-toggle="tooltip-required">
+								</td>
+							</tr>
+							<tr>
+								<th>İçerik</th>
+								<td style="background-color:#FFEBE4;">
+									<input type="text" id="icerik" class="form-control" maxlength="50" required="" data-hg-toggle="tooltip-required">
+								</td>
+							</tr>
+							<tr>
+								<th>Değer</th>
+								<td>
+									<input id="deger" class="form-control keypress-barrier" data-input-type="Decimal" maxlength="10" type="number" OnClick="select();">
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+						<tr>
+							<td colspan="2">
+						 		<button type="button" value="Kaydet" class="btn btn-success hg-w100" onclick="Kaydet('olustur')" data-toggle="modal" data-target=".bs-example-modal-sm">
+						 			Kaydet&nbsp;&nbsp;<i class="fa fa-check"></i>
+						 		</button>
+							</td>
+						</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>				
+	<div class="w-box visibility" style="margin-top: 1%;">
+		<div class="w-box-header">
+			<label id="tanimlamaTablosuListesiBasligi"></label>
+		</div>
+		<div class="w-box-content cnt_a">
+			<div id="tanimlamaTablosuListesi" style="overflow: auto;"></div>
+		</div>	
+	</div>	
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#adresler td").trigger("click");
+	});
+	$(".define-buttons").click(function(){
+		deger = $(this).attr("value");
+		textIcerigi = $(this).text();
+		$(".define-buttons-selected").removeClass("define-buttons-selected");
+		$(this).addClass("define-buttons-selected");
+		$("#tanimlamaTablosuBaslik").text(textIcerigi+" Tanım");
+		$("#tanimlamaTablosu").val(deger);
+		$("#tanimlamaTablosuListesiBasligi").text(textIcerigi);
+		$.ajax({
+	        type: "POST",
+	        url: "",
+	        data: {
+	        	"ajaxTanimlamalar" : deger,
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){ 
+	            $("#datatable_wrapper").remove();
+	            var tanimlamaTablosu = ""
+	            tanimlamaTablosu += '\
+	            <table class="table table-bordered responsive" id="datatable">\
+	            	<thead>\
+	            		<tr>\
+	            			<th style="width: 20%;">Kodu</th>\
+	            			<th style="width: 20%;">İçerik</th>\
+	            			<th style="width: 20%;">Değer</th>\
+	            			<th style="min-width: 80px;min-width: 85px">İşlem</th>\
+	            		</tr>\
+	            	</thead>\
+	            <tbody>'
+	            for(var i=0;i<Veri.ajaxTanimlamaListesi.length;i++){
+	            	var tanimlama = Veri.ajaxTanimlamaListesi[i]	
+	            	tanimlamaTablosu += '<tr id="tanimlamaTr'+Veri.ajaxTanimlamaListesi[i][0]+'" class="define_detail">'
+		            	for(var x=0;x<tanimlama.length;x++){
+		            		if(x == tanimlama.length-1){
+		            			tanimlamaTablosu += '<td id="tanimlamaKodu'+Veri.ajaxTanimlamaListesi[i][0]+'">'+tanimlama[1]+'</td><td id="tanimlamaIcerik'+Veri.ajaxTanimlamaListesi[i][0]+'">'+tanimlama[2]+'</td><td id="tanimlamaDeger'+Veri.ajaxTanimlamaListesi[i][0]+'">'+tanimlama[3]+'</td>'
+		            			tanimlamaTablosu += '<td>\
+		            			<div class="bs-example" data-example-id="split-button-dropdown">\
+		            			<div class="btn-group">\
+			            			<button id="guncelle_'+Veri.ajaxTanimlamaListesi[i][0]+'" class="btn btn-warning" onclick="Guncelle('+tanimlama[0]+')" style="display: block; margin:2px; border-radius:3px;">\
+			            				<i class="fa fa-pencil-square-o"></i>\
+			            			</button>\
+			            			<button id="sil_'+Veri.ajaxTanimlamaListesi[i][0]+'" class="btn btn-danger" onclick="Sil('+tanimlama[0]+')" style="display: block; margin:2px; border-radius:3px;">\
+			            			<i class="fa fa-trash"></i>\
+			            			</button>\
+			            			<button id="geri_'+Veri.ajaxTanimlamaListesi[i][0]+'" class="btn btn-default" onclick="Geri('+tanimlama[0]+')" style="display: none; margin:2px; border-radius:3px;">\
+			            			<i class="fa fa-undo"></i>\
+			            			</button>\
+			            			<button id="kaydet_'+Veri.ajaxTanimlamaListesi[i][0]+'" class="btn btn-success" onclick="GuncellemeKaydet('+tanimlama[0]+')" style="display: none; margin:2px; border-radius:3px;">\
+			            			<i class="fa fa-floppy-o"></i>\
+			            			</button>\
+		            			</div>\
+		            			</div>\
+		            			</td>'
+		            		}
+		            	}
+		            tanimlamaTablosu += '</tr>'
+	            }
+	            tanimlamaTablosu += '</tbody>' 
+	            $("#tanimlamaTablosuListesi").append(tanimlamaTablosu) 
+		        $("#datatable").DataTable(dataTableOptions);
+	        },
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+    	});
+	});
+	//<!-- Tanımlama Kaydetme Fonksiyonu Ajaxla -->
+	function Kaydet(arguman){
+		if($("#kodu").val() != "" && $("#icerik").val() != ""){
+			var tanimlamaDegerleri = "";
+			tanimlamaDegerleri += arguman;
+			tanimlamaDegerleri += "<|>"+$("#tanimlamaTablosu").val();
+			tanimlamaDegerleri += "<|>"+$("#kodu").val();
+			tanimlamaDegerleri += "<|>"+$("#icerik").val();
+			tanimlamaDegerleri += "<|>"+$("#deger").val();
+			$.ajax({
+		        type: "POST",
+		        url: "",
+		        data: {
+		        	"ajaxTanimlamalarListesi" : tanimlamaDegerleri,
+		        csrfmiddlewaretoken: "{{ csrf_token }}"
+		        },
+		        dataType: "json",
+		        success: function(Veri){
+					$("#"+$("#tanimlamaTablosu").val()+" td").trigger("click");
+		        },
+		        error: function(Hata){
+		            alert("Hata !");
+		        }
+		    });
+		};
+    };
+    //<!-- Tanımalama Güncelleme Fonksiyonu Yönlendirme -->
+    function Guncelle(arguman){
+    	if (confirm("Tanımlama Kaydı Güncellensin mi?") == true) {
+	    	var kodu   = $("#tanimlamaKodu"+arguman+"").text();
+	    	var icerik = $("#tanimlamaIcerik"+arguman+"").text();
+	    	var deger  = $("#tanimlamaDeger"+arguman+"").text();
+	    	var appendKodu   = '<input id="tanimlamaKoduInput_'+arguman+'" type="text" value="'+kodu+'">'
+	    	var appendIcerik = '<input id="tanimlamaIcerikInput_'+arguman+'" type="text" value="'+icerik+'">'
+	    	var appendDeger  = '<input id="tanimlamaDegerInput_'+arguman+'" type="text" value="'+deger+'">'
+
+			$("#guncelle_"+arguman+"").hide();
+			$("#sil_"+arguman+"").hide();
+			$("#geri_"+arguman+"").css("display","block");
+			$("#kaydet_"+arguman+"").css("display","block");
+	    	$("#tanimlamaKodu"+arguman+"").text("");
+	    	$("#tanimlamaIcerik"+arguman+"").text("");
+	    	$("#tanimlamaDeger"+arguman+"").text("");
+	    	$("#tanimlamaKodu"+arguman+"").append(appendKodu);
+	    	$("#tanimlamaIcerik"+arguman+"").append(appendIcerik);
+	    	$("#tanimlamaDeger"+arguman+"").append(appendDeger);
+	    	//<!-- Tanımlama Güncelleme İptal İşlemi (Geri) -->
+	    	if($("#geri_"+arguman+"").on("click",function(){
+	    		$("#guncelle_"+arguman+"").show();
+				$("#sil_"+arguman+"").show();
+				$("#geri_"+arguman+"").css("display","none");
+				$("#kaydet_"+arguman+"").css("display","none");
+	    		$("#tanimlamaKoduInput_"+arguman+"").remove();
+		    	$("#tanimlamaIcerikInput_"+arguman+"").remove();
+		    	$("#tanimlamaDegerInput_"+arguman+"").remove();
+		    	$("#tanimlamaKodu"+arguman+"").text(kodu);
+		    	$("#tanimlamaIcerik"+arguman+"").text(icerik);
+		    	$("#tanimlamaDeger"+arguman+"").text(deger);
+	    	}));
+	    	//<!-- Tanımlama Güncelle Fonksiyonu Ajaxla -->
+	    	if($("#kaydet_"+arguman+"").on("click",function(){
+	    		if($("#tanimlamaDegerInput_"+arguman+"").val() != ""){
+					var tanimlamaGuncelle = "";
+					tanimlamaGuncelle += "guncelle";
+					tanimlamaGuncelle += "<|>"+arguman;
+					tanimlamaGuncelle += "<|>"+$("#tanimlamaTablosu").val();
+					tanimlamaGuncelle += "<|>"+$("#tanimlamaKoduInput_"+arguman+"").val(); 
+					tanimlamaGuncelle += "<|>"+$("#tanimlamaIcerikInput_"+arguman+"").val();
+					tanimlamaGuncelle += "<|>"+$("#tanimlamaDegerInput_"+arguman+"").val();
+					var guncelleKodu = $("#tanimlamaKoduInput_"+arguman+"").val();
+			    	var guncelleIcerik = $("#tanimlamaIcerikInput_"+arguman+"").val()
+			    	var guncelleDeger = $("#tanimlamaDegerInput_"+arguman+"").val();
+					$.ajax({
+				        type: "POST",
+				        url: "",
+				        data: {
+				        	"ajaxTanimlamaGuncelle" : tanimlamaGuncelle,
+				        csrfmiddlewaretoken: "{{ csrf_token }}"
+				        },
+				        dataType: "json",
+				        success: function(Veri){
+				            $("#guncelle_"+arguman+"").show();
+							$("#sil_"+arguman+"").show();
+							$("#geri_"+arguman+"").css("display","none");
+							$("#kaydet_"+arguman+"").css("display","none");
+				            $("#tanimlamaKoduInput_"+arguman+"").remove();
+					    	$("#tanimlamaIcerikInput_"+arguman+"").remove();
+					    	$("#tanimlamaDegerInput_"+arguman+"").remove();
+					    	$("#tanimlamaKodu"+arguman+"").text(Veri.ajaxKodu);
+					    	$("#tanimlamaIcerik"+arguman+"").text(Veri.ajaxIcerik);
+					    	$("#tanimlamaDeger"+arguman+"").text(Veri.ajaxDeger); 
+				        },
+				        error: function(Hata){
+				            alert("Hata !");
+				        }
+				    });
+				};
+	    	}));
+	    };
+	};
+	//<!-- Tanımlama Sil Fonksiyonu Ajaxla -->    
+    function Sil(arguman){
+    	if (confirm("Tanımlama Kaydı Silinsin mi?") == true){
+	    	var tanimlamaSil = "";
+	    	tanimlamaSil += "sil";
+			tanimlamaSil += "<|>"+arguman;
+			tanimlamaSil += "<|>"+$("#tanimlamaTablosu").val();
+	    	$.ajax({
+		        type: "POST",
+		        url: "",
+		        data: {
+		        	"ajaxTanimlamaGuncelle" : tanimlamaSil,
+		        csrfmiddlewaretoken: "{{ csrf_token }}"
+		        },
+		        dataType: "json",
+		        success: function(Veri){ 
+		        	$("#tanimlamaTr"+arguman+"").remove();          
+		        },
+		        error: function(Hata){
+		            alert("Hata !");
+		        }
+		    });
+	    };
+	};    
+</script>
+{% endblock %}

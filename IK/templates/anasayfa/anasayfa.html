@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block pagetitle %}{{ block.super }} - Anasayfa {% endblock %}
+{% block body  %}
+<div class="container-fluid">
+	<div class="w-box">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="w-box-header">
+					Duyurular
+				</div>
+				<div class="w-box-content" style="height: 150px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th colspan="2">Başlık</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for duyurular in sqlDuyurular  %}
+							<tr>
+								<td>
+									<a>
+										<label id="duyuruBaslik" key="{{ duyurular.DuyuruKodu }}" class="duyuruBaslik">{{ duyurular.Baslik }}</label>
+									</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+			    </div>
+			    <div class="w-box-content" style="height: 200px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>İçerik</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="duyuruIcerik"></td>
+							</tr>
+						</tbody>
+					</table>
+			    </div>
+			</div>
+			<div class="col-md-4">
+				<div class="w-box-header">
+					Görevler
+				</div>
+				<div class="w-box-content" style="height: 150px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th colspan="2">Başlık</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for gorevler in sqlGorevler  %}
+							<tr>
+								<td style="width: 75%;">
+								<a>
+									<label id="gorevBaslik" key="{{ gorevler.GorevKodu }}" class="gorevBaslik">{{ gorevler.Baslik }}</label>
+								</a>
+								</td>
+								<td align="right"  style="width: 25%;">
+									<input type="button" id="gorevTamamla" value="Tamamla" class="btn btn-info gorevTamamla" key="{{ gorevler.GorevKodu }}">
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="w-box-content" style="height: 200px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>İçerik</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="gorevIcerik"></td>
+							</tr>
+						</tbody>
+					</table>
+			    </div>
+			</div>
+			<div class="col-md-4">
+				<div class="w-box-header">
+					Hatırlatmalar
+				</div>
+				<div class="w-box-content" style="height: 150px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th colspan="2">Başlık</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for hatirlatmalar in sqlHatirlatmalar  %}
+							<tr>
+								<td style="width: 75%;">
+								<a>
+									<label id="hatirlatmaBaslik" key="{{ hatirlatmalar.HatirlatmaKodu }}" class="hatirlatmaBaslik">{{ hatirlatmalar.Baslik }}</label>
+								</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="w-box-content" style="height: 200px;overflow: auto;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>İçerik</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="hatirlatmaIcerik"></td>
+							</tr>
+						</tbody>
+					</table>
+			    </div>
+			</div>
+		</div>
+	</div>    
+</div>
+<script type="text/javascript">
+$(".duyuruBaslik").click(function(){
+		$.ajax({
+        type: "post",
+        url: "",
+        data: {
+        	"ajaxDuyuruKodu" : $(this).attr("key"),
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        dataType: "json",
+        success: function(Veri){
+        	$("#duyuruIcerik").html(Veri.ajaxDuyuru);
+        }, 
+        error: function(Hata){
+            alert("Hata !");
+        }
+    });
+});
+$(".gorevBaslik").click(function(){
+		$.ajax({
+        type: "post",
+        url: "",
+        data: {
+        	"ajaxGorevKodu" : $(this).attr("key"),
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        dataType: "json",
+        success: function(Veri){
+        	$("#gorevIcerik").html(Veri.ajaxGorev);
+        }, 
+        error: function(Hata){
+            alert("Hata !");
+        }
+    });
+});
+$(".hatirlatmaBaslik").click(function(){
+		$.ajax({
+        type: "post",
+        url: "",
+        data: {
+        	"ajaxHatirlatmaKodu" : $(this).attr("key"),
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        dataType: "json",
+        success: function(Veri){
+        	$("#hatirlatmaIcerik").html(Veri.ajaxHatirlatma);
+        }, 
+        error: function(Hata){
+            alert("Hata !");
+        }
+    });
+});
+$(".gorevTamamla").click(function(){
+	if(confirm("Görev Tamamlandı Olarak İşaretlenecek ! Onaylıyor musunuz ?") == true){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxGorevTamamla" : $(this).attr("key"),
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+	        	alert(Veri.ajaxMesaj);
+	        }, 
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+	    });
+	};
+});
+</script>
+{% endblock %}

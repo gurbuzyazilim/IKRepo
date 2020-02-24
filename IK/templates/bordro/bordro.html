@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block pagetitle %}{{ block.super }} - Bordro {% endblock %}
+{% block body  %}
+<div class="container-fluid">	
+	<div class="w-box">
+		<div class="w-box-header">
+			<div align="Center">
+				<span>Ücret Bordrosu</span>
+			</div>
+		</div>
+		<div class="w-box-content">
+	 		<table class="table table-bordered">
+	 			<tr>
+	 				<th>İsim Soyisim</th>
+	 				<th>İlişkin Olduğu Ay</th>
+	 				<th>Bordro Tarihi</th>
+	 				<th>İşe Giriş Tarihi</th>
+	 			</tr>
+	 			<tr>
+	 				<td>
+						<select class="form-control" id="isimSoyisim">
+							<option selected="" value="">Seçiniz</option>
+							{% for personel in sqlPersoneller %}
+							<option value="{{personel.id}}">{{personel.Isim}}&nbsp;{{personel.Soyisim}}</option>
+							{% endfor %}
+						</select>
+	 				</td>
+	 				<td>
+	 					<select id="aitOldAy" class="form-control">
+	 						<option value="" selected="">Seçiniz</option>
+	 						<option value="1">Ocak</option>
+	 						<option value="2">Şubat</option>
+	 						<option value="3">Mart</option>
+	 						<option value="4">Nisan</option>
+	 						<option value="5">Mayıs</option>
+	 						<option value="6">Haziran</option>
+	 						<option value="7">Temmuz</option>
+	 						<option value="8">Ağustos</option>
+	 						<option value="9">Eylül</option>
+	 						<option value="10">Ekim</option>
+	 						<option value="11">Kasım</option>
+	 						<option value="12">Aralık</option>
+	 					</select>
+	 				</td>
+	 				<td>
+	 					<input type="date" id="tanzimTarihi" value="{{ suan|date:'Y-m-d' }}" class="form-control">
+	 				</td>
+	 				<td id="iseGirisTarihi"></td>
+	 			</tr>
+	 			<tr>
+	 				<th>Ücret Türü</th>
+	 				<th>Mersis Numarası</th>
+	 				<th>SGK Sicil Numarası</th>
+	 				<th>Mesleği</th>
+	 			</tr>
+	 			<tr>
+	 				<td id="ucretTuru"></td>
+	 				<td id="mersisNumarasi"></td>
+	 				<td id="sgkSicilNumarasi"></td>
+	 				<td id="meslegi"></td>
+	 			</tr>
+	 			<tr>
+	 				<th>Mesai Süresi/Saat</th>
+	 				<th>Mesai Tutari</th>
+	 			</tr>
+	 			<tr>
+	 				<td id="mesaiSuresi"></td>
+	 				<td id="mesaiTutari"></td>
+	 			</tr>
+	 			<tr id="tr3"></tr>
+	 		</table>
+	 		<div class="row" style="margin-top: 1%;">
+	 			<div class="col-md-6">
+	 				<table class="table table-bordered">
+			 			<thead>
+			 				<th colspan="2">Kazançlar</th>
+			 			</thead>
+			 			<tbody id="kazanclar"></tbody>
+			 		</table>
+	 			</div>
+	 			<div class="col-md-6">
+	 				<table class="table table-bordered">
+	 					<thead>
+	 						<th colspan="2">Kesintiler</th>
+	 					</thead>
+	 					<tbody id="kesintiler"></tbody>
+	 				</table>
+	 			</div>
+	 		</div>
+	 		<div class="row" style="margin-top: 1%;">
+	 			<div class="col-md-12">
+	 				<input type="button" value="Kaydet" class="btn btn-success hg-w100" onclick="Kaydet();">
+	 			</div>
+	 		</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$("#isimSoyisim").change(function(){
+	if($(this).val() != ""){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxPersonel" : $(this).val(),
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+	        	$("#tr3").children().remove();
+	        	$("#tr3").append(Veri.ajaxFazlaMesaiSaatleri);
+	        	$("#kazanclar").children().remove();
+	        	$("#kesintiler").children().remove();
+				$("#kesintiler").append(Veri.ajaxSgkIsciKes);
+				$("#kesintiler").append(Veri.ajaxSgkIsverenKes);
+				$("#kesintiler").append(Veri.ajaxIssizlikIsciKes);
+				$("#kesintiler").append(Veri.ajaxIssizlikIsverenKes);
+				$("#kesintiler").append(Veri.ajaxGelirVergisiMatrahi);
+				$("#kesintiler").append(Veri.ajaxGelirVergisiKes);
+				$("#kesintiler").append(Veri.ajaxDamgaVerKes);
+	        	$("#kesintiler").append(Veri.ajaxKesintiler);
+	        	$("#kesintiler").append(Veri.ajaxAvanslar);
+	        	$("#iseGirisTarihi").html(Veri.ajaxIseGirisTarihi);
+	        	$("#meslegi").html(Veri.ajaxMeslek);
+	        	$("#mersisNumarasi").html(Veri.ajaxKimlikNo);
+	        	$("#ucretTuru").html(Veri.ajaxUcretTipi);
+	        	$("#mesaiSuresi").html(Veri.ajaxMesaiSuresi);
+	        	$("#mesaiTutari").html(Veri.ajaxUcret);
+	        	$("#kazanclar").append(Veri.ajaxBrutUcret);
+	        	for(var i=0;i<Veri.ajaxYardimlar.length;i++){
+	        		$("#kazanclar").append(Veri.ajaxYardimlar[i]);
+	        	};
+	        	$("#kazanclar").append(Veri.ajaxAgiTutar);
+	        	$("#kazanclar").append(Veri.ajaxPrimler);
+	        	$("#kazanclar").append(Veri.ajaxIkramiyeler);
+	        	$("#kazanclar").append(Veri.ajaxFazlaMesaiTutarlari);
+	        	$("#kazanclar").append(Veri.ajaxEngelliIndirimi);
+	        }, 
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+	    });
+	};
+});	
+</script>
+{% endblock %}

@@ -1,0 +1,575 @@
+{% extends 'base.html' %}
+{% block pagetitle %}{{ block.super }} - Kullanıcı Tanımlamaları {% endblock %}
+{% block body  %}
+<div class="container-fluid">
+	<div class="w-box">
+		<div class="w-box-header">
+			<div align="Center">
+				<span>Kullanici Grubları Tanımlama Ekranı</span>
+			</div>
+		</div>
+		<div class="w-box-content">
+			<table class="table table-bordered" style="overflow: auto;width: 100%;height: 100%;">
+				<tbody>
+					<tr>
+						<th style="width: 25%;">Kullanıcı&nbsp;Grubları</th>
+						<td style="width: 75%;">
+							<select class="form-control">
+								<option value="" selected="">Seçiniz</option>
+								{% for kullaniciGrubuModel in varKullaniciGrubuModel %}
+								<option value="{{ kullaniciGrubuModel.KullaniciGrubuKodu }}">{{ kullaniciGrubuModel.KullaniciGrubu }}</option>
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Kullanıcı&nbsp;Grubu&nbsp;Kodu&nbsp;Ekle</th>
+						<td>
+							<input type="text" id="kullaniciGrubuKodu" value="" class="form-control" placeholder="Kullanıcı Grubu Kodu Ekle">
+						</td>
+					</tr>
+					<tr>
+						<th>Kullanıcı&nbsp;Grubu&nbsp;Ekle</th>
+						<td>
+							<input type="text" id="kullaniciGrubu" value="" class="form-control" placeholder="Kullanıcı Grubu Ekle">
+						</td>
+					</tr>
+					<tr>
+						<th></th>
+						<td>
+							<input type="button" value="Gönder" class="btn btn-success" style="width: 100%;" onclick="KaydetKGrubu();">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="w-box" style="margin-top: 1%;">
+		<div class="w-box-header">
+			<div align="Center">
+				<span>Kullanıcı Tipi Yetkileri </span>
+			</div>
+		</div>
+		<div class="w-box-content">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<th style="width: 25%;">Kullanıcı&nbsp;Tipleri</th>
+						<td style="width: 75%;">
+							<select id="kullaniciTipleri" class="form-control">
+								<option value="" selected="">Seçiniz</option>
+								{% for kullaniciTipiModel in varKullaniciTipiModel %}
+								<option value="{{ kullaniciTipiModel.KullaniciTipiKodu }}">{{ kullaniciTipiModel.KullaniciTipi }}</option>
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th style="width: 15%;">
+							<div align="Center">Moduller</div>
+						</th>
+						<th colspan="7" style="width: 85%;">
+							<div align="Center">Yetkiler</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="modulYetkileri">
+						<th>
+							<div align="Center">Modul Yetkileri</div>
+						</th>
+					</tr>
+					<tr id="anasayfaModulu">
+						<th>
+							<div align="Center">Anasayfa Yetkileri</div>
+						</th>
+					</tr>
+					<tr id="kullanicilarModulu">
+						<th>
+							<div align="Center">Kullanıcılar Modülü Yetkileri</div>
+						</th>
+					</tr>
+					<tr id="personelModulu">
+						<th>
+							<div align="Center">Personel Yetkileri</div>
+						</th>
+					</tr>
+					<tr id="hareketlerModulu">
+						<th>
+							<div align="Center">Hareketler Modülü Yetkileri</div>
+						</th>
+					</tr>
+					<tr id="tanimlamalarModulu">
+						<th>
+							<div align="Center">Tanımlama Modülü Yetkileri</div>
+						</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="w-box" style="margin-top: 1%;">
+		<div class="w-box-header">
+			<div align="Center">
+				<span>Kullanıcı Tipleri Tanımlama ve Yetkilendirme Ekranı</span>
+			</div>
+		</div>
+		<div class="w-box-content">
+			<table class="table table-bordered" style="overflow: auto;width: 100%;height: 100%;">
+				<tbody>
+					<tr>
+						<th style="width: 25%;">Kullanıcı&nbsp;Tipi&nbsp;Kodu&nbsp;Ekle</th>
+						<td style="width: 75%;">
+							<input type="text" id="kullaniciTipiKodu" class="form-control" placeholder="Kullanıcı Tipi Kodu Ekle">
+						</td>
+					</tr>
+					<tr>
+						<th>Kullanıcı&nbsp;Tipi&nbsp;Ekle</th>
+						<td>
+							<input type="text" id="kullaniciTipi" value="" class="form-control" placeholder="Kullanıcı Tipi Ekle">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Bu Kullanıcı Tipi Hangi Modülleri Görüntülesin ?</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isAnaSayfa" name="moduller" value="0" class="clickHG">
+									&nbsp;&nbsp;Anasayfa
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullanicilar" name="moduller" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcılar
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersoneller" name="moduller" value="0" class="clickHG">
+									&nbsp;&nbsp;Personeller
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketler" name="moduller" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareketler
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamalar" name="moduller" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanimlamalar
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div>
+	 		<div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Kullanıcılar Modülü Yetkileri</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullaniciOlustur" name="kullanicilar" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcı Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullaniciListele" name="kullanicilar" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcı Listele
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullaniciGuncelle" name="kullanicilar" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcı Güncelle
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullaniciDetay" name="kullanicilar" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcı Detay
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isKullaniciSil" name="kullanicilar" value="0" class="clickHG">
+									&nbsp;&nbsp;Kullanıcı Sil
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div>
+
+	 		<div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Anasayfa Modülü Yetkileri</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isDuyuruOlustur" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Duyuru Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isGorevOlustur" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Görev Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHatirlatmaOlustur" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Hatırlatma Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isDuyuruGoruntule" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Duyuru Görüntüle
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isGorevGoruntule" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Görev Görüntüle
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHatirlatmaGoruntule" name="anasayfa" value="0" class="clickHG">
+									&nbsp;&nbsp;Hatırlatma Görüntüle
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div>
+
+			<div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Personel Modülü Yetkileri</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersonelOlustur" name="personel" value="0" class="clickHG">
+									&nbsp;&nbsp;Personel Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersonelListele" name="personel" value="0" class="clickHG">
+									&nbsp;&nbsp;Personel Listele
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersonelGuncelle" name="personel" value="0" class="clickHG">
+									&nbsp;&nbsp;Personel Güncelle
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersonelDetay" name="personel" value="0" class="clickHG">
+									&nbsp;&nbsp;Personel Detay
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isPersonelSil" name="personel" value="0" class="clickHG">
+									&nbsp;&nbsp;Personel Sil
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div><div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Hareketler Modülü Yetkileri</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketOlustur" name="hareketler" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareket Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketListele" name="hareketler" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareket Listele
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketGuncelle" name="hareketler" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareket Güncelle
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketDetay" name="hareketler" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareket Detay
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isHareketSil" name="hareketler" value="0" class="clickHG">
+									&nbsp;&nbsp;Hareket Sil
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div>
+	 		<div style="overflow: auto; width: 100%;height: 100%;">
+	 			<table class="table table-bordered">
+	 				<thead>
+	 					<tr>
+		 					<th colspan="9">
+		 						<div align="Center">
+		 							<label>Tanımlamalar Modülü Yetkileri</label>
+		 						</div>
+		 					</th>
+	 					</tr>
+	 				</thead>
+	 				<tbody>
+	 					<tr>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamaOlustur" name="tanimlamalar" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanımlama Oluştur
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamaListele" name="tanimlamalar" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanımlama Listele
+								</label>
+			 				</td>
+			 				<td align="Center">
+			 					<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamaGuncelle" name="tanimlamalar" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanımlama Güncelle
+								</label>
+			 				</td>
+			 				<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamaDetay" name="tanimlamalar" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanımlama Detay
+								</label>
+		 					</td>
+		 					<td align="Center">
+		 						<label>&nbsp;&nbsp;
+									<input type="checkbox" id="isTanimlamaSil" name="tanimlamalar" value="0" class="clickHG">
+									&nbsp;&nbsp;Tanımlama Sil
+								</label>
+		 					</td>
+			 			</tr>
+	 				</tbody>	
+	 			</table>
+	 		</div>
+	 		<table class="table table-bordered">
+		 		<tbody>
+		 			<tr>
+						<td>
+							<input type="button" value="Gönder" class="btn btn-success" style="width: 100%;" onclick="Kaydet();">
+						</td>
+					</tr>
+		 		</tbody>
+		 	</table>
+		</div>	
+	</div>
+</div>
+<script type="text/javascript">
+$(".clickHG").click(function(){
+	if($(this).val() == "0"){
+		$(this).val("1");
+	}else{$(this).val("0");};
+});
+$("#kullaniciTipleri").change(function(){
+	if($(this).val != ""){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxKullaniciTipleri" : $(this).val(),
+	        	csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+	        	$("#modulYetkileri td").remove()
+	    		for(var i=0;i<Veri.ajaxModulYetkileri.length;i++){
+	        		$("#modulYetkileri").append("\
+	        				<td>"+Veri.ajaxModulYetkileri[i]+"</td>\
+					");
+	        	};
+	        	$("#anasayfaModulu td").remove()
+	    		for(var i=0;i<Veri.ajaxAnasayfaYetkileri.length;i++){
+	        		$("#anasayfaModulu").append("\
+	        				<td>"+Veri.ajaxAnasayfaYetkileri[i]+"</td>\
+					");
+	        	};
+	    		$("#kullanicilarModulu td").remove()
+	    		for(var i=0;i<Veri.ajaxKullaniciYetkileri.length;i++){
+	        		$("#kullanicilarModulu").append("\
+	        				<td>"+Veri.ajaxKullaniciYetkileri[i]+"</td>\
+					");
+	        	};
+	        	$("#personelModulu td").remove()
+	    		for(var i=0;i<Veri.ajaxPersonelYetkileri.length;i++){
+	        		$("#personelModulu").append("\
+	        			<td>"+Veri.ajaxPersonelYetkileri[i]+"</td>\
+					");
+	        	};
+	        	$("#hareketlerModulu td").remove()
+	    		for(var i=0;i<Veri.ajaxHareketYetkileri.length;i++){
+	        		$("#hareketlerModulu").append("\
+	        			<td>"+Veri.ajaxHareketYetkileri[i]+"</td>\
+					");
+	        	};
+	        	$("#tanimlamalarModulu td").remove()
+	    		for(var i=0;i<Veri.ajaxTanimlamaYetkileri.length;i++){
+	        		$("#tanimlamalarModulu").append("\
+	        			<td>"+Veri.ajaxTanimlamaYetkileri[i]+"</td>\
+					");
+	        	};
+	        }, 
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+	    });
+	};
+});
+function KaydetKGrubu(){
+	$.ajax({
+        type: "post",
+        url: "",
+        data: {
+        	"ajaxKullaniciGrubuKodu" : $("#kullaniciGrubuKodu").val(),
+        	"ajaxKullaniciGrubu"     : $("#kullaniciGrubu").val(),
+        	csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        dataType: "json",
+        success: function(Veri){
+        	location = "/kullanicilar/kayit";
+        }, 
+        error: function(Hata){
+            alert("Hata !");
+        }
+    });
+};
+function Kaydet(){
+	if(confirm("Kaydedilsin mi ?") == true){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+				"ajaxKullaniciTipiKodu" : $("#kullaniciTipiKodu").val(),
+	        	"ajaxKullaniciTipi"     : $("#kullaniciTipi").val(),
+	        	"ajaxIsAnaSayfa"        : $("#isAnaSayfa").val(),
+	        	"ajaxIsKullanicilar"    : $("#isKullanicilar").val(),
+	        	"ajaxIsPersoneller"     : $("#isPersoneller").val(),
+	        	"ajaxIsHareketler"      : $("#isHareketler").val(),
+	        	"ajaxIsTanimlamalar"    : $("#isTanimlamalar").val(),
+
+	        	"ajaxIsDuyuruOlustur"       : $("#isDuyuruOlustur").val(),
+	        	"ajaxIsGorevOlustur"        : $("#isGorevOlustur").val(),
+	        	"ajaxIsHatirlatmaOlustur"   : $("#isHatirlatmaOlustur").val(),
+	        	"ajaxIsDuyuruGoruntule"     : $("#isDuyuruGoruntule").val(),
+	        	"ajaxIsGorevGoruntule"      : $("#isGorevGoruntule").val(),
+	        	"ajaxIsHatirlatmaGoruntule" : $("#isHatirlatmaGoruntule").val(),
+
+	        	"ajaxIsKullaniciOlustur"  : $("#isKullaniciOlustur").val(),
+	        	"ajaxIsKullaniciListele"  : $("#isKullaniciListele").val(),
+	        	"ajaxIsKullaniciDetay"    : $("#isKullaniciDetay").val(),
+	        	"ajaxIsKullaniciGuncelle" : $("#isKullaniciGuncelle").val(),
+	        	"ajaxIsKullaniciSil"      : $("#isKullaniciSil").val(),
+
+	        	"ajaxIsPersonelOlustur"  : $("#isPersonelOlustur").val(),
+	        	"ajaxIsPersonelListele"  : $("#isPersonelListele").val(),
+	        	"ajaxIsPersonelDetay"    : $("#isPersonelGuncelle").val(),
+	        	"ajaxIsPersonelGuncelle" : $("#isPersonelDetay").val(),
+	        	"ajaxIsPersonelSil"      : $("#isPersonelSil").val(),
+
+	        	"ajaxIsHareketOlustur"  : $("#isHareketOlustur").val(),
+	        	"ajaxIsHareketListele"  : $("#isHareketListele").val(),
+	        	"ajaxIsHareketDetay"    : $("#isHareketGuncelle").val(),
+	        	"ajaxIsHareketGuncelle" : $("#isHareketDetay").val(),
+	        	"ajaxIsHareketSil"      : $("#isHareketSil").val(),
+
+	        	"ajaxIsTanimlamaOlustur"  : $("#isTanimlamaOlustur").val(),
+	        	"ajaxIsTanimlamaListele"  : $("#isTanimlamaListele").val(),
+	        	"ajaxIsTanimlamaDetay"    : $("#isTanimlamaGuncelle").val(),
+	        	"ajaxIsTanimlamaGuncelle" : $("#isTanimlamaDetay").val(),
+	        	"ajaxIsTanimlamaSil"      : $("#isTanimlamaSil").val(),
+
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+	        	location = "/kullanicilar/kayit";
+	        }, 
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+	    });
+	};
+};
+</script>
+{% endblock %}

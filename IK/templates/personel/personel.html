@@ -1,0 +1,1034 @@
+{% extends 'base.html' %}
+{% block pagetitle %}{{ block.super }} - Personel {% endblock %}
+{% block body  %}	
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="w-box-header">
+				&nbsp;&nbsp;Personel Oluştur
+			</div>
+			<div class="w-box-content">
+				<input type="button" value="Personel Oluştur" class="btn btn-default" onclick="PersonelOlustur();" style="width: 100%">
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="w-box-header">
+				&nbsp;&nbsp;Personel Listesi
+			</div>
+			<div class="w-box-content" >
+				<input type="button" value="Personel Listesi" class="btn btn-default" onclick="PersonelListesi();" style="width: 100%">
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="w-box-header">
+				&nbsp;&nbsp;Tarih
+			</div>
+			<div class="w-box-content">
+				<input type="button" value="{{ suan|date:'d-F-Y' }}" class="btn btn-default" style="width: 100%">
+			</div>
+		</div>
+	</div>	
+	<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs" id="personelOlusturmaTablosu" style="margin-top: 1%; margin-bottom: 1%;">
+		<div class="w-box-header" style="height:36px;border-bottom:#FFFFFF;">
+			<div class="hg-div-scroll">
+				<table style="width: 100%">
+					<tr class="hg-tab-panel-parent">
+						<td class="hg-tab-panel hg-tab-panel-active" id="panelPersonnelInformationTitle">
+							Personel&nbsp;Özlük&nbsp;Bilgileri
+						</td>
+						<td class="hg-tab-panel" id="panelStaffingDefinitionsTitle">
+							Personel&nbsp;Tanımlamaları
+						</td>
+						<td class="hg-tab-panel" id="panelPreferencesTitle">
+							Personel&nbsp;Tercihleri
+						</td>
+						<td class="hg-tab-panel" id="panelJobTerminationTitle">
+							Personel&nbsp;İş&nbsp;Feshi
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="w-box-content cnt_a">
+			<div class="tab-content" id="myTabContent">
+				<div class="hg-fadein" role="TabPanel" id="panelPersonnelInformation">
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%">Kodu</th>
+							<td style="background-color:#FFEBE4;">
+								<input type="text" id="kodu" class="form-control requiredHg keypress-barrier" data-input-type="TextCode">
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 25%">İsim</th>
+							<td style="background-color:#FFEBE4;">
+								<input type="text" id="isim" class="form-control requiredHg">
+							</td>
+						</tr>
+						<tr>
+							<th>Soyisim</th>
+							<td  style="background-color:#FFEBE4;">
+								<input type="text" id="soyIsim" class="form-control requiredHg">
+							</td>
+						</tr>
+						<tr>
+							<th>Eski Soyisim</th>
+							<td>
+								<input type="text" id="eskiSoyisim" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Orj Dil İsim Soyisim</th>
+							<td>
+								<input type="text" id="orjDilIsSoyisim" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 25%">Kimlik Numarası</th>
+							<td style="background-color:#FFEBE4;">
+								<input type="number" id="kimlikNo" class="form-control requiredHg keypress-barrier" data-input-type="Number">
+							</td>
+						</tr>
+						<tr>
+							<th>Uyruk</th>
+							<td  style="background-color:#FFEBE4;">
+								<select id="uyruk" class="form-control requiredHg">
+									<option value="" selected="">Seçiniz</option>
+									{% for millet in milletler %}
+									<option value="{{millet}}">{{millet}}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Cinsiyet</th>
+							<td  style="background-color:#FFEBE4;" id="cinsiyet" class="requiredHg" val="">
+								<label>&nbsp;&nbsp;
+									<input type="radio" id="cinsiyetKadin" name="cinsiyet" value="0" maxlength="10">
+									&nbsp;&nbsp;Kadın
+								</label>
+								<label>&nbsp;&nbsp;
+									<input type="radio" id="cinsiyetErkek" name="cinsiyet" value="1" maxlength="10">
+									&nbsp;&nbsp;Erkek
+								</label>
+							</td>
+						</tr>
+						<tr><!-- maxlength="10" -->
+							<th>Medeni Hal</th>
+							<td style="background-color:#FFEBE4;" id="medeniHal" class="requiredHg" val="">
+								<label>&nbsp;&nbsp;
+									<input type="radio" id="medeniHalBekar" name="medeniHal" value="0" maxlength="10">
+									&nbsp;&nbsp;Bekar
+								</label>
+								<label>&nbsp;&nbsp;
+									<input type="radio" id="medeniHalEvli" name="medeniHal" value="1" maxlength="10">
+									&nbsp;&nbsp;Evli
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>Kan Grubu</th>
+							<td  style="background-color:#FFEBE4;">
+								<select id="kanGrubu" class="form-control requiredHg">
+									<option selected="" value="">Seçiniz</option>
+									<option value="0 Rh-">0 Rh-</option>
+									<option value="0 Rh+">0 Rh+</option>
+									<option value="A Rh-">A Rh-</option>
+									<option value="A Rh+">A Rh+</option>
+									<option value="B Rh-">B Rh-</option>
+									<option value="B Rh+">B Rh+</option>
+									<option value="AB Rh-">AB Rh-</option>
+									<option value="AB Rh+">AB Rh+</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Doğum Tarihi</th>
+							<td style="background-color:#FFEBE4;">
+								<input type="date" id="dogumTarihi" value="{{ suan|date:'Y-m-d' }}" class="datetime_class requiredHg" data-date-operation="dogumTarihi" data-date-operation-type="date">
+							</td>
+						</tr>				
+						<tr>
+							<th>Doğum Yeri</th>
+							<td>
+								<input type="text" id="dogumYeri" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Din</th>
+							<td  style="background-color:#FFEBE4">
+								<select id="kimlikteDin" class="form-control requiredHg">
+									<option value="" selected="">Seçiniz</option>
+									<option value="1">İslam</option>
+									<option value="2">Hristiyanlık</option>
+									<option value="3">Yahudilik</option>
+									<option value="4">Diğer</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Seri No</th>
+							<td>
+								<input type="text" id="kimlikSeriNo" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>İl</th>
+							<td>
+								<select id="il" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+									{% for il in iller %}
+									<option value="{{il}}">{{il}}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>İlçe</th>
+							<td>
+								<select id="ilce" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Mahalle</th>
+							<td>
+								<input type="text" id="mahalle" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Köy</th>
+							<td>
+								<input type="text" id="koy" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Cilt No</th>
+							<td>
+								<input type="text" id="ciltNo" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Sayfa No</th>
+							<td>
+								<input type="text" id="sayfaNo" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Kütük No</th>
+							<td>
+								<input type="text" id="kutukNo" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Veriliş Nedeni</th>
+							<td>
+								<input type="text" id="verilisNedeni" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Kayıt No</th>
+							<td>
+								<input type="text" id="kimlikKayitNo" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Tel No 1</th>
+							<td>
+								<input type="tel" id="tel1" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>
+						<tr>
+							<th>Tel No 2</th>
+							<td>
+								<input type="tel" id="tel2" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>
+						<tr>
+							<th>Tel No 3</th>
+							<td>
+								<input type="tel" id="tel3" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td>
+								<input type="email" id="email" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>KEP</th>
+							<td>
+								<input type="email" id="KEP" class="form-control">
+							</td>
+						</tr>
+					</table>
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%">Acil Durum Kişi 1</th>
+							<td>
+								<input type="text" id="acilDurKisi1" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Acil Durum Kisi 1 Tel</th>
+							<td>
+								<input type="phone" id="acilDurKisi1Tel" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>
+						<tr>
+							<th>Acil Durum Kişi 2</th>
+							<td>
+								<input type="text" id="acilDurKisi2" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Acil Durum Kisi 2 Tel</th>
+							<td>
+								<input type="phone" id="acilDurKisi2Tel" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>
+						<tr>
+							<th>Referans Kişi 1</th>
+							<td>
+								<input type="text" id="referansKisi1" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Referans Kişi 1 Tel</th>
+							<td>
+								<input type="phone" id="referansKisi1Tel" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>				
+						<tr>
+							<th>Referans Kişi 2</th>
+							<td>
+								<input type="text" id="referansKisi2" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Referans Kişi 2 Tel</th>
+							<td>
+								<input type="phone" id="referansKisi2Tel" class="form-control keypress-barrier" data-input-type="Phone">
+							</td>
+						</tr>						
+					</table>
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%;vertical-align:middle;">Özel Not</th>
+							<td>
+								<textarea id="ozelNot" class="form-control"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button type="button" class="btn btn-info hg-w100" onclick="Ileri1();">İleri&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr>					
+					</table>
+				</div>
+				<div class="hg-fadeout" role="TabPanel" id="panelStaffingDefinitions"> 
+					<table class="table table-bordered">
+						<tr>
+							<th>İşe Giriş Tarihi</th>
+							<td style="background-color:#FFEBE4">
+								<input type="date" id="iseGirisTarihi" value="{{ suan|date:'Y-m-d' }}" class="datetime_class requiredHg" data-date-operation="iseGirisTarihi" data-date-operation-type="datetime">
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 25%;">Öğrenim Durumu</th>
+							<td style="background-color:#FFEBE4">
+								<select id="ogrenimDurumu" class="form-control requiredHg">
+									<option selected="" value="">Seçiniz</option>
+									<option value="1">İlköğretim (Öğrenci)</option>
+									<option value="2">İlköğretim (Mezun)</option>
+									<option value="3">Lise (Öğrenci)</option>
+									<option value="4">Lise (Mezun)</option>
+									<option value="5">MYO (Öğrenci)</option>
+									<option value="6">MYO (Mezun)</option>
+									<option value="7">Üniversite (Öğrenci)</option>
+									<option value="8">Üniversite (Mezun)</option>
+									<option value="9">Yüksek Lisans (Öğrenci)</option>
+									<option value="10">Yüksek Lisans (Mezun)</option>
+									<option value="11">Doktora (Öğrenci)</option>
+									<option value="12">Doktora (Mezun)</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 25%;">Meslek</th>
+							<td style="background-color:#FFEBE4">
+								<select id="meslek" class="form-control requiredHg">
+									<option selected="" value="">Seçiniz</option>
+									{% for meslek in meslekler %}
+									<option value="{{ meslek }}">{{ meslek }}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Maaş Tipi</th>
+							<td style="background-color:#FFEBE4">
+								<select class="form-control requiredHg" id="maasTipi">
+									<option selected=""value="">Seçiniz</option>
+									{% for maasTipi in maasTipleri %}
+							    		<option value="{{maasTipi.Kodu}}">{{maasTipi.Icerik}}</option>
+							    	{% endfor %}
+						    	</select>
+							</td>
+						</tr>	
+						<tr>
+							<th>Döviz Tipi</th>
+							<td>
+								<select class="form-control" id="dovizTipi">
+									<option selected=""value="">Seçiniz</option>
+									{% for doviz in dovizler %}
+							    		<option value="{{doviz.Kodu}}">{{doviz.Icerik}}</option>
+							    	{% endfor %}
+						   		 </select>
+							</td>
+						</tr>
+					</table>
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%;">Departman</th>
+							<td style="background-color:#FFEBE4;">
+								<select class="form-control requiredHg" id="departmanKodu">
+									<option selected value="">Seçiniz</option>
+									{% for departman in departmanlar %}
+							    		<option value="{{departman.Kodu}}">{{departman.Icerik}}</option>
+							    	{% endfor %}
+						    	</select>
+						    </td>
+						</tr>
+						<tr>
+							<th>Grup</th>
+							<td>
+								<select class="form-control" id="grupKodu">
+									<option selected value="">Seçiniz</option>
+									{% for grup in gruplar %}
+							    		<option value="{{grup.Kodu}}">{{grup.Icerik}}</option>
+							    	{% endfor %}
+						    	</select>
+							</td>
+						</tr>
+						<tr>
+							<th>İdari Amir</th>
+							<td>
+								<select id="idariAmirKodu" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+									{% for personel in sqlPersoneller %}
+									<option value="{{personel.Kodu}}">{{personel.Isim}}&nbsp;{{personel.Soyisim}}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Teknik Amir</th>
+							<td>
+								<select id="teknikAmirKodu" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+									{% for personel in sqlPersoneller %}
+									<option value="{{personel.Kodu}}">{{personel.Isim}}&nbsp;{{personel.Soyisim}}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Muhasebe Kodu</th>
+							<td>
+								<input type="text" id="muhasebeKodu" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Sigorta Kodu</th>
+							<td>
+								<input type="text" id="sigortaKodu" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Sigorta Belge Tipi</th>
+							<td>
+								<input type="text" id="sigortaBelgeTipi" class="form-control">
+							</td>
+						</tr>
+					</table>		
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%;">Mevsim</th>
+							<td>
+								<input type="text" id="mevsim" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<th>Kapsam</th>
+							<td>
+								<input type="text" id="kapsam" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button type="button" class="btn hg-w100" onclick="Geri2();"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;Geri
+								</button>
+							</td>
+							<td>
+								<button type="button" class="btn btn-info hg-w100" onclick="Ileri2();">İleri&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="hg-fadeout" role="TabPanel"id="panelPreferences">
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%;">Servis No</th>
+							<td>
+								<select id="servisNo" class="form-control">
+									<option selected value="">Seçiniz</option>
+									{% for tasimaTipi in tasimaTipleri %}
+							    		<option value="{{tasimaTipi.Kodu}}">{{tasimaTipi.Icerik}}</option>
+							    	{% endfor %}
+						    	</select>
+						    </td>
+						</tr>
+						<tr>
+							<th>Özür Derecesi</th>
+							<td>
+								<select id="ozurDerecesi" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+									<option value="1">1. Derece(% 80 ve Üzeri)</option>
+									<option value="2">2. Derece(% 60 ve Üzeri)</option>
+									<option value="3">3. Derece(% 40 ve Üzeri)</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>İzin Günü</th>
+							<td>
+								<select id="izinGunu" class="form-control">
+									<option value="" selected="">Seçiniz</option>
+									<option value="1">Pazartesi</option>
+									<option value="2">Salı</option>
+									<option value="3">Çarşamba</option>
+									<option value="4">Perşembe</option>
+									<option value="5">Cuma</option>
+									<option value="6">Cumartesi</option>
+									<option value="7">Pazar</option>
+									<option value="8">Cmts-Pazar</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Mesai Tipi</th>
+							<td>
+								<select id="mesaiTipi" class="form-control">
+									<option selected=""value="">Seçiniz</option>
+									{% for mesaiTipi in mesaiTipleri %}
+							    		<option value="{{mesaiTipi.Kodu}}">{{mesaiTipi.Icerik}}</option>
+							    	{% endfor %}
+						    	</select>
+						    </td>
+						</tr>
+						<tr>
+							<th>Mesai Yapabilir</th>
+							<td>
+								<input type="checkbox" id="mesaiYapabilir" class="checkHG" value="0">
+							</td>
+						</tr>
+						<tr>
+							<th>Seyehat Engeli</th>
+							<td>
+								<input type="checkbox" id="seyehatEngeli" class="checkHG" value="0">
+							</td>
+						</tr>
+						<tr>
+							<th>Gece Vardiyası</th>
+							<td>
+								<input type="checkbox" id="geceVardiyasi" class="checkHG" value="0">
+							</td>
+						</tr>
+						<tr>
+							<th>İbadet İzni</th>
+							<td>
+								<input type="checkbox" id="ibadetIzni" class="checkHG" value="0">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button type="button" class="btn hg-w100" onclick="Geri3();"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;Geri
+								</button>
+							</td>
+							<td>
+								<button type="button" class="btn btn-info hg-w100" onclick="Ileri3();">İleri&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr>
+					</table>	
+				</div>
+				<div class="hg-fadeout" role="TabPanel" id="panelJobTermination">
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 25%;">Çıkış Tarihi</th>
+							<td>
+								<input type="date" id="cikisTarihi" class="datetime_class" data-date-operation="WorkOutDate" data-date-operation-type="datetime">
+							</td><!-- {{ suan|date:'H:i' }} -->
+						</tr>
+						<tr>
+							<th style="vertical-align:middle;">Çıkış Nedeni</th>
+							<td>
+								<textarea id="cikisNedeni" class="form-control"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button type="button" class="btn hg-w100" onclick="Geri4();"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;Geri</button>
+							</td>
+							<td>
+								<input type="button" id="kaydet" value="Kaydet" key="" key2="" class="btn btn-success" style="width:100%;" onclick="Kaydet();">
+							</td>
+						</tr>
+					</table>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w-box" id="personelListesiTablosu" style="margin-top: 1%; display: none;">
+		<div class="w-box-header">
+			<span>Personel Kaydı Listesi</span>
+		</div>
+		<div class="w-box-content cnt_a" style="overflow:auto">
+			<table class="table table-striped table-bordered table-hover" id="datatable">
+				<thead>
+					<tr>
+						<th>Kodu</th>
+						<th>İsim</th>
+						<th>Soyisim</th>
+						<th>İşe Giriş Tarihi</th>
+						<th>İşlem</th><!--  style="min-width: 125px;max-width: 125px;" -->
+					</tr>
+				</thead>
+				<tbody>
+				{% for personel in sqlPersoneller %}
+					<tr id="{{ personel.id }}">
+						<td>{{ personel.Kodu }}</td>
+						<td>{{ personel.Isim }}</td>
+						<td>{{ personel.Soyisim }}</td>
+						<td>{{ personel.IseGirisTarihi  }}</td>
+						<td>
+							<button class="btn btn-info" onclick="Detay('{{ personel.id }}')" onmouseover="DetayOver('{{ personel.id }}')" onmouseout="DetayOut('{{ personel.id }}')">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</button>
+							<button class="btn btn-warning" onclick="Guncelle('{{ personel.id }}')" onmouseover="GuncelleOver('{{ personel.id }}')" onmouseout="GuncelleOut('{{ personel.id }}')">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+							<button class="btn btn-danger" onclick="Sil('{{ personel.id }}')" onmouseover="SilOver('{{ personel.id }}')" onmouseout="SilOut('{{ personel.id }}')">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				{% endfor %}	
+				</tbody>
+			</table>	
+		</div>	
+	</div>
+	<div class="modal fade" id="myModal" tabindex="-1"style="display: none;">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close closeX">
+	        			<span aria-hidden="true">&times;</span>
+	        		</button>
+	       			 <h4 class="modal-title">Detay Tablosu</h4>
+	      		</div>
+	      		<div class="modal-body" style="overflow: auto;height:270px;">
+	        		<table id="detayTablo" class='table table-bordered'>
+	        			<tbody></tbody>
+	        		</table>
+	    		</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-default closeX">
+		        		Kapat
+		        	</button>
+		      	</div>
+	    	</div>
+	    </div>
+	</div>				
+</div>
+<script type="text/javascript">
+	$("#il").change(function(){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxIlSecim" : $(this).val(),
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+	        	$("#ilce option").remove();
+	        	var a = -1;
+				for(var i = 0; i<Veri.ajaxIlceler.length; i++){
+	        		a++
+					$("#ilce").append("\
+	        			<option>"+Veri.ajaxIlceler[a]+"</option>\
+					");
+				};
+	        },
+	        error: function(Hata) {
+	            alert("Hata !");
+	        }
+        });
+	});
+	function PersonelOlustur(){
+		$("#personelListesiTablosu").css("display","none");
+		$("#personelOlusturmaTablosu").css("display","block");
+	};
+	function PersonelListesi(){
+		$("#personelOlusturmaTablosu").css("display","none");
+		$("#personelListesiTablosu").css("display","block");
+	};
+	$("[name='cinsiyet']").click(function(){
+		$("#cinsiyet").val($(this).val());
+	});
+	$("[name='medeniHal']").click(function(){
+		$("#medeniHal").val($(this).val());
+	});
+	$(".checkHG").click(function(){
+		if($(this).val() == 0){
+			$(this).val(1);
+		}else{$(this).val(0);};
+	});
+
+	function Kaydet(){
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxArguman"          : $("#kaydet").attr("key"),
+	        	"ajaxArguman2"         : $("#kaydet").attr("key2"),
+	        	"ajaxKodu"             : $("#kodu").val(),
+				"ajaxYetkisi"          : $("#yetkisi").val(),
+				"ajaxParola"           : $("#parola").val(),
+				"ajaxGirisYapabilir"   : $("#girisYapabilir").val(),
+				"ajaxIsim"             : $("#isim").val(),
+				"ajaxSoyIsim"          : $("#soyIsim").val(),
+				"ajaxEskiSoyisim"      : $("#eskiSoyisim").val(),
+				"ajaxOrjDilIsSoyisim"  : $("#orjDilIsSoyisim").val(),
+				"ajaxTel1"             : $("#tel1").val(),
+				"ajaxTel2"             : $("#tel2").val(),
+				"ajaxTel3"             : $("#tel3").val(),
+				"ajaxEmail"            : $("#email").val(),
+				"ajaxKEP"              : $("#KEP").val(),
+				"ajaxAcilDurKisi1"     : $("#acilDurKisi1").val(),
+				"ajaxAcilDurKisi1Tel"  : $("#acilDurKisi1Tel").val(),
+				"ajaxAcilDurKisi2"     : $("#acilDurKisi2").val(),
+				"ajaxAcilDurKisi2Tel"  : $("#acilDurKisi2Tel").val(),
+				"ajaxReferansKisi1"    : $("#referansKisi1").val(),
+				"ajaxReferansKisi1Tel" : $("#referansKisi1Tel").val(),
+				"ajaxReferansKisi2"    : $("#referansKisi2").val(),
+				"ajaxReferansKisi2Tel" : $("#referansKisi2Tel").val(),
+				"ajaxKimlikNo"         : $("#kimlikNo").val(),
+				"ajaxUyruk"            : $("#uyruk").val(),
+				"ajaxCinsiyet"         : $("#cinsiyet").val(),
+				"ajaxMedeniHal"        : $("#medeniHal").val(),
+				"ajaxKanGrubu"         : $("#kanGrubu").val(),
+				"ajaxDogumTarihi"      : $("#dogumTarihi").val(),
+				"ajaxDogumYeri"        : $("#dogumYeri").val(),
+				"ajaxKimlikteDin"      : $("#kimlikteDin").val(),
+				"ajaxKimlikSeriNo"     : $("#kimlikSeriNo").val(),
+				"ajaxIl"               : $("#il").val(),
+				"ajaxIlce"             : $("#ilce").val(),
+				"ajaxMahalle"          : $("#mahalle").val(),
+				"ajaxKoy"              : $("#koy").val(),
+				"ajaxCiltNo"           : $("#ciltNo").val(),
+				"ajaxSayfaNo"          : $("#sayfaNo").val(),
+				"ajaxKutukNo"          : $("#kutukNo").val(),
+				"ajaxVerilisNedeni"    : $("#verilisNedeni").val(),
+				"ajaxKimlikKayitNo"    : $("#kimlikKayitNo").val(),
+				"ajaxOzelNot"          : $("#ozelNot").val(),
+				"ajaxMeslek"           : $("#meslek").val(),
+				"ajaxMaasTipi"         : $("#maasTipi").val(),
+				"ajaxDovizTipi"        : $("#dovizTipi").val(),
+				"ajaxDepartmanKodu"    : $("#departmanKodu").val(),
+				"ajaxGrupKodu"         : $("#grupKodu").val(),
+				"ajaxIdariAmirKodu"    : $("#idariAmirKodu").val(),
+				"ajaxTeknikAmirKodu"   : $("#teknikAmirKodu").val(),
+				"ajaxMuhasebeKodu"     : $("#muhasebeKodu").val(),
+				"ajaxSigortaKodu"      : $("#sigortaKodu").val(),
+				"ajaxSigortaBelgeTipi" : $("#sigortaBelgeTipi").val(),
+				"ajaxIseGirisTarihi"   : $("#iseGirisTarihi").val(),
+				"ajaxOgrenimDurumu"    : $("#ogrenimDurumu").val(),
+				"ajaxMevsim"           : $("#mevsim").val(),
+				"ajaxKapsam"           : $("#kapsam").val(),
+				"ajaxServisNo"         : $("#servisNo").val(),
+				"ajaxOzurDerecesi"     : $("#ozurDerecesi").val(),
+				"ajaxIzinGunu"         : $("#izinGunu").val(),
+				"ajaxMesaiTipi"        : $("#mesaiTipi").val(),
+				"ajaxMesaiYapabilir"   : $("#mesaiYapabilir").val(),
+				"ajaxSeyehatEngeli"    : $("#seyehatEngeli").val(),
+				"ajaxGeceVardiyasi"    : $("#geceVardiyasi").val(),
+				"ajaxIbadetIzni"       : $("#ibadetIzni").val(),
+				"ajaxCikisTarihi"      : $("#cikisTarihi").val(),
+				"ajaxCikisNedeni"      : $("#cikisNedeni").val(),
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+				location = "/personel/personelolustur";
+	        },
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+        });
+	};
+
+	function Detay(arguman){	
+		$("#group_div").show();
+		$.ajax({
+	        type: "post",
+	        url: "",
+	        data: {
+	        	"ajaxDetay" : arguman,
+	        csrfmiddlewaretoken: "{{ csrf_token }}"
+	        },
+	        dataType: "json",
+	        success: function(Veri){
+				$("#myModal").css("display","block");
+	        	$("#myModal").attr("class","modal fade in");
+	        	var a = 0;
+	        	for(var i = 0; i<Veri.ajaxPersonelListesi.length; i++){
+	        		a++
+					$("#detayTablo tbody").append("\
+	        			<tr class='id_detail_tr' style=''>\
+	        				<th style='width:40%;padding-bottom:5px;'>"+Veri.ajaxPersonelBaslik[a]+"</th>\
+	        				<td style='width:60%;padding-bottom:5px;'>"+Veri.ajaxPersonelListesi[i]+"</td>\
+	        			</tr>\
+					");
+				};
+	        },
+	        error: function(Hata){
+	            alert("Hata !");
+	        }
+        });
+	};
+
+	function Sil(arguman){
+		if (confirm("Personel Kaydı Silinsin mi ?") == true) {
+    		$.ajax({
+		        type: "post",
+		        url: "",
+		        data: {
+		        	"ajaxSil" : arguman,
+		        csrfmiddlewaretoken: "{{ csrf_token }}"
+		        },
+		        dataType: "json",
+		        success: function(Veri){		        	
+		        	$('#'+arguman+'').remove();
+		        },
+		        error: function(Hata){
+		            alert("Hata !");
+		        }
+	        });
+		};	
+	};
+
+	function Guncelle(arguman){
+		if (confirm("Personel Kaydı Güncellensin mi ?") == true) {
+    		$.ajax({
+		        type: "post",
+		        url: "",
+		        data: {
+		        	"ajaxGuncelle" : arguman,
+		        csrfmiddlewaretoken: "{{ csrf_token }}"
+		        },
+		        dataType: "json",
+		        success: function(Veri){
+		        	$("#personelListesiTablosu").css("display","none");
+					$("#personelOlusturmaTablosu").css("display","block");
+					$("#iptal").show();
+		        	$("#kaydet").attr("key","1");
+		        	$("#kaydet").attr("key2",Veri.ajaxPerGunc[0]);
+		        	$("#kodu").val(Veri.ajaxPerGunc[11]);
+					$("#iseGirisTarihi").val(Veri.ajaxPerGunc[12]);
+					$("#ogrenimDurumu").val(Veri.ajaxPerGunc[13]);
+					$("#meslek").val(Veri.ajaxPerGunc[14]);
+					$("#departmanKodu").val(Veri.ajaxPerGunc[15]);
+					$("#grupKodu").val(Veri.ajaxPerGunc[16]);
+					$("#muhasebeKodu").val(Veri.ajaxPerGunc[17]);
+					$("#idariAmirKodu").val(Veri.ajaxPerGunc[18]);
+					$("#teknikAmirKodu").val(Veri.ajaxPerGunc[19]);
+					$("#sigortaKodu").val(Veri.ajaxPerGunc[20]);
+					$("#sigortaBelgeTipi").val(Veri.ajaxPerGunc[21]);
+					$("#mevsim").val(Veri.ajaxPerGunc[22]);
+					$("#kapsam").val(Veri.ajaxPerGunc[23]);
+					$("#maasTipi").val(Veri.ajaxPerGunc[24]);
+					$("#dovizTipi").val(Veri.ajaxPerGunc[25]);
+					$("#servisNo").val(Veri.ajaxPerGunc[26]);
+					$("#ozurDerecesi").val(Veri.ajaxPerGunc[27]);
+					$("#izinGunu").val(Veri.ajaxPerGunc[28]);
+					if(Veri.ajaxPerGunc[29] == true){
+						$("#seyehatEngeli").attr("checked","True");
+						$("#seyehatEngeli").attr("value",1);
+					};
+					if(Veri.ajaxPerGunc[30] == true){
+						$("#mesaiYapabilir").attr("checked","True");
+						$("#mesaiYapabilir").attr("value",1);
+					};
+					$("#mesaiTipi").val(Veri.ajaxPerGunc[31]);
+					if(Veri.ajaxPerGunc[32] == true){
+						$("#geceVardiyasi").attr("checked","True");
+						$("#geceVardiyasi").attr("value",1);
+					};
+					if(Veri.ajaxPerGunc[33] == true){
+						$("#ibadetIzni").attr("checked","True");
+						$("#ibadetIzni").attr("value",1);
+					};
+					$("#cikisTarihi").val(Veri.ajaxPerGunc[34]);
+					$("#cikisNedeni").val(Veri.ajaxPerGunc[35]);
+					$("#isim").val(Veri.ajaxPerGunc[36]);
+					$("#soyIsim").val(Veri.ajaxPerGunc[37]);
+					$("#eskiSoyisim").val(Veri.ajaxPerGunc[38]);
+					$("#orjDilIsSoyisim").val(Veri.ajaxPerGunc[39]);
+					$("#kimlikNo").val(Veri.ajaxPerGunc[40]);
+					$("#uyruk").val(Veri.ajaxPerGunc[41]);
+					if(Veri.ajaxPerGunc[42] == "0"){
+						$("#cinsiyetKadin").attr("checked","True");
+						$("#cinsiyet").val(Veri.ajaxPerGunc[42]);
+					};
+					if(Veri.ajaxPerGunc[42] == "1"){
+						$("#cinsiyetErkek").attr("checked","True");
+						$("#cinsiyet").val(Veri.ajaxPerGunc[42]);
+					};
+					if(Veri.ajaxPerGunc[43] == "0"){
+						$("#medeniHalBekar").attr("checked","True");
+						$("#medeniHal").val(Veri.ajaxPerGunc[43]);
+					};
+					if(Veri.ajaxPerGunc[43] == "1"){
+						$("#medeniHalEvli").attr("checked","True");
+						$("#medeniHal").val(Veri.ajaxPerGunc[43]);
+					};
+					$("#kanGrubu").val(Veri.ajaxPerGunc[44]);
+					$("#dogumTarihi").val(Veri.ajaxPerGunc[45]);
+					$("#dogumYeri").val(Veri.ajaxPerGunc[46]);
+					$("#kimlikteDin").val(Veri.ajaxPerGunc[47]);
+					$("#kimlikSeriNo").val(Veri.ajaxPerGunc[48]);
+					$("#il").val(Veri.ajaxPerGunc[49]);
+					$("#ilce").append("<option>"+Veri.ajaxPerGunc[50]+"</option");
+					$("#ilce").val(Veri.ajaxPerGunc[50]);
+					$("#mahalle").val(Veri.ajaxPerGunc[51]);
+					$("#koy").val(Veri.ajaxPerGunc[52]);
+					$("#ciltNo").val(Veri.ajaxPerGunc[53]);
+					$("#sayfaNo").val(Veri.ajaxPerGunc[54]);
+					$("#kutukNo").val(Veri.ajaxPerGunc[55]);
+					$("#verilisNedeni").val(Veri.ajaxPerGunc[56]);
+					$("#kimlikKayitNo").val(Veri.ajaxPerGunc[57]);
+					$("#tel1").val(Veri.ajaxPerGunc[58]);
+					$("#tel2").val(Veri.ajaxPerGunc[59]);
+					$("#tel3").val(Veri.ajaxPerGunc[60]);
+					$("#email").val(Veri.ajaxPerGunc[61]);
+					$("#KEP").val(Veri.ajaxPerGunc[62]);
+					$("#acilDurKisi1").val(Veri.ajaxPerGunc[63]);
+					$("#acilDurKisi1Tel").val(Veri.ajaxPerGunc[64]);
+					$("#acilDurKisi2").val(Veri.ajaxPerGunc[65]);
+					$("#acilDurKisi2Tel").val(Veri.ajaxPerGunc[66]);
+					$("#referansKisi1").val(Veri.ajaxPerGunc[67]);
+					$("#referansKisi1Tel").val(Veri.ajaxPerGunc[68]);
+					$("#referansKisi2").val(Veri.ajaxPerGunc[69]);
+					$("#referansKisi2Tel").val(Veri.ajaxPerGunc[70]);
+					$("#ozelNot").val(Veri.ajaxPerGunc[71]);
+		        },
+		        error: function(Hata){
+		            alert("Hata !");
+		        }
+	        });
+		};
+	};
+	function Test(){
+        var test = ""
+        $("#panelPersonnelInformation .requiredHg").each(function(){
+            if($(this).val() == ""){
+                test = false
+                return false
+            }else{test = true};
+        });
+        return test;
+    };
+    function Test2(){
+        var test = ""
+        $("#panelStaffingDefinitions .requiredHg").each(function(){
+            if($(this).val() == ""){
+                test = false
+                return false
+            }else{test = true};
+        });
+        return test;
+    };
+	function Ileri1(){
+		if(Test() == true){
+			$("#panelPersonnelInformation").removeClass("hg-fadein").addClass("hg-fadeout");
+			$("#panelStaffingDefinitions").removeClass("hg-fadeout").addClass("hg-fadein");
+			$("#panelStaffingDefinitionsTitle").addClass("hg-tab-panel-active");
+			$("#panelPersonnelInformationTitle").removeClass("hg-tab-panel-active");
+		}else{Required();};
+	};
+	function Ileri2(){
+		if(Test2() == true){
+			$("#panelStaffingDefinitions").removeClass("hg-fadein").addClass("hg-fadeout");
+			$("#panelPreferences").removeClass("hg-fadeout").addClass("hg-fadein");
+			$("#panelPreferencesTitle").addClass("hg-tab-panel-active");
+			$("#panelStaffingDefinitionsTitle").removeClass("hg-tab-panel-active");
+		}else{Required();};
+		
+	};
+	function Ileri3(){
+		$("#panelPreferences").removeClass("hg-fadein").addClass("hg-fadeout");
+		$("#panelJobTermination").removeClass("hg-fadeout").addClass("hg-fadein");
+		$("#panelJobTerminationTitle").addClass("hg-tab-panel-active");
+		$("#panelPreferencesTitle").removeClass("hg-tab-panel-active");
+		return false;
+	};
+	function Geri2(){
+		$("#panelStaffingDefinitions").removeClass("hg-fadein").addClass("hg-fadeout");
+		$("#panelPersonnelInformation").removeClass("hg-fadeout").addClass("hg-fadein");
+		$("#panelPersonnelInformationTitle").addClass("hg-tab-panel-active");
+		$("#panelStaffingDefinitionsTitle").removeClass("hg-tab-panel-active");
+	};
+	function Geri3(){
+		$("#panelPreferences").removeClass("hg-fadein").addClass("hg-fadeout");
+		$("#panelStaffingDefinitions").removeClass("hg-fadeout").addClass("hg-fadein");
+		$("#panelStaffingDefinitionsTitle").addClass("hg-tab-panel-active");
+		$("#panelPreferencesTitle").removeClass("hg-tab-panel-active");
+	};
+	function Geri4(){
+		$("#panelJobTermination").removeClass("hg-fadein").addClass("hg-fadeout");
+		$("#panelPreferences").removeClass("hg-fadeout").addClass("hg-fadein");
+		$("#panelPreferencesTitle").addClass("hg-tab-panel-active");
+		$("#panelJobTerminationTitle").removeClass("hg-tab-panel-active");
+	};
+	
+
+	//#datatable tr arkaplan renkleri
+	function DetayOver(value){$("#"+value+"").css('background-color','#4EB4D2');};
+	function DetayOut(value){$("#"+value+"").css('background-color', '');};
+	function GuncelleOver(value){$("#"+value+"").css('background-color','#F9A42A');};
+    function GuncelleOut(value){$("#"+value+"").css('background-color','');};
+    function SilOver(value){$("#"+value+"").css('background-color','#D84D47');};
+    function SilOut(value){$("#"+value+"").css('background-color','');};
+
+	$(".closeX").click(function(){
+		$(".id_detail_tr").remove();
+		$("#myModal").css("display","none");
+		$("#myModal").attr("class","modal fade");
+	});
+
+	$("#kimlikNo").keyup(function(key){
+		var a = $("#kimlikNo").val();
+		var b = a[0]+a[1]+a[2]+a[3]+a[4]+a[5]+a[6]+a[7]+a[8]+a[9]+a[10]
+		if(a.length > 11){
+			$("#kimlikNo").val(b);
+		};
+	});
+</script>
+{% endblock %}
